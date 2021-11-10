@@ -1,10 +1,9 @@
 #include<stdio.h>
 #include <time.h>
-#include<conio.h>
+#include <conio.h>
 #include <ctype.h>
-#include<string.h>
-#include<stdlib.h>
-#include<process.h>
+#include <string.h>
+#include <stdlib.h>
 #include <windows.h>
 #define true 1
 #define false 0
@@ -12,6 +11,7 @@
 #define BKSP 8
 #define TAB 9
 #define SPACE 32
+
 int get_size();
 void adminRegistration();
 void encrypt();
@@ -44,10 +44,11 @@ void deleteRecord();
 
 
 void gotoxy(short x, short y) {
-	//sets co-ordinates in (x,y)
 	COORD pos = {x,y};
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),pos);
 }
+
+
 struct patient {
 	char firstName[20], lastName[20];
 	char add[100],sex[10], problem[20],depart[20], consultant[10], registeredDate[10];
@@ -56,6 +57,7 @@ struct patient {
 	float bed,doc,misc;
 };
 struct patient p;
+
 
 int main () {
 	fullScreen();
@@ -91,19 +93,19 @@ void welcomeScreen() {
 
 void credit() {
 	welcomeScreen();
-	gotoxy(50,14);
+	gotoxy(59,14);
 	printf("SPECIAL THANKS TO PROJECT'S CONTRIBUTORS");
-	gotoxy(57,16);
+	gotoxy(66,16);
 	printf("Sakar Aryal - Team Leader");
-	gotoxy(60,18);
+	gotoxy(69,18);
 	printf("Pawan Chaudhary");
-	gotoxy(60,20);
+	gotoxy(69,20);
 	printf("Sandhya Khadka");
-	gotoxy(61,22);
+	gotoxy(70,22);
 	printf("Himal Aryal");
-	printf("\n\n\t\t\t\t________________________________________________________________________________");
-	printf("\n\n\t\t\t\t\t\tFor Source Code: Visit github.com/techiesakar");
-	printf("\n\n\t\t\t\t\t\t\tPress any key to continue...");
+	printf("\n\t\t\t\t_____________________________________________________________________________________________");
+	printf("\n\n\t\t\t\t\t\t\tFor Source Code: Visit github.com/techiesakar");
+	printf("\n\n\t\t\t\t\t\t\t\tPress any key to continue...");
 	getch();
 	mainMenu();
 }
@@ -263,6 +265,7 @@ void adminPanel() {
 	printf("\n\n\t\t\t\t4. Search Record");
 	printf("\n\n\t\t\t\t5. Delete Record");
 	printf("\n\n\t\t\t\t6. Update Admin's Details");
+	printf("\n\n\t\t\t\t7. Terminate Program");
 	printf("\n\n\t\t\t\t0. Logout");
 	printf("\n\n\t\t\t\tEnter your choice... ");
 	int ch;
@@ -286,7 +289,11 @@ void adminPanel() {
 		case 6:
 			changePassword();
 			break;
+		case 0:
+			mainMenu();
+			break;
 		default:
+			thankyou();
 			break;
 	}
 }
@@ -322,6 +329,8 @@ void mainMenu() {
 			thankyou();
 			break;
 		default:
+			fflush(stdin);
+			mainMenu();
 			break;
 	}
 }
@@ -356,11 +365,6 @@ void addRecord() {
 	struct tm tm = *localtime(&t);
 	sprintf(currentDate, "%d-%d-%d", tm.tm_year+1900,tm.tm_mon + 1,tm.tm_mday);
 	strcpy(p.registeredDate, currentDate );
-
-
-
-
-
 	addRecordItem(); // Add patient's all data
 	fprintf(fp,"%s\t%s\t%s\t%s\t%d\t%d\t%s\t%s\t%s\t%s\t%f\t%f\t%s\n",p.firstName, p.lastName,p.add, p.sex, p.age, p.patientno, p.phone,p.problem,p.depart,p.consultant, p.doc, p.misc,p.registeredDate);
 	printf("\n\n\t\t\t.....Information Record Successful ...");
@@ -461,21 +465,18 @@ void tableHead() {
 	printf("TOTAL FEES");
 	gotoxy(165, 17);
 	printf("Registered Date");
-
 	gotoxy(183,16);
 	printf("|");
 	gotoxy(183,17);
 	printf("|");
 	gotoxy(183,18);
 	printf("|");
-
 	gotoxy(11,17);
 	printf("|");
 	gotoxy(11,18);
 	printf("|");
 	gotoxy(12,18);
 	printf("___________________________________________________________________________________________________________________________________________________________________________");
-
 }
 int listLoopRow(int row) {
 	// This function is used inside while loop, to print the user's record in each line
@@ -523,7 +524,6 @@ void viewRecord() {
 		listLoopRow(row);
 		row++;
 	}
-	fclose(fp);
 	printf("\n\n\t    ___________________________________________________________________________________________________________________________________________________________________________");
 	fclose(fp); // Closing file ponter after displaying record
 	printf("\n\n\t\t\t\t    Enter any key to continue..."); // Asking user to press any key
@@ -626,16 +626,13 @@ void editRecord() {
 	if(!valid) {
 		printf("\n\n\t\t\t\tNo record found");
 	}
-
-	fclose(tf);
 	fclose(fp);
+	fclose(tf);
 	remove("patient.txt"); // remove existing file
 	rename("temp_patient.txt","patient.txt"); // Renaming temporaty file to original name
 	getch();
 	adminPanel(); // Go back to main memu
 }
-
-
 
 void deleteRecord() {
 	welcomeScreen();
@@ -647,7 +644,6 @@ void deleteRecord() {
 	int row = 20;
 	char ans;
 	printf("\n\n\n\t\t\t\t************************** ABC Hospital - Delete Patient's Record *************************\n");
-
 	if((fp=fopen("patient.txt","r"))==NULL) {
 		welcomeScreen();
 		printf("\n\n\t\t\t\t File is empty...");
@@ -663,7 +659,6 @@ void deleteRecord() {
 	scanf("%i",&searchID);
 	printf("\n\n\t\t\t\t\t Enter ID again to confirm : ");
 	scanf("%i", &confirmID); // To confirm with search ID entered before
-
 	if(searchID==confirmID) {
 		confirm = true;
 		while(fscanf(fp,"%s%s%s%s%d%d%s%s%s%s%f%f%s",p.firstName, p.lastName,p.add,p.sex,&p.age,&p.patientno,&p.phone,p.problem,p.depart,p.consultant,&p.doc,&p.misc,p.registeredDate)!=EOF) {
