@@ -23,5 +23,5 @@ Features(Record)
      
  - Compile(F9) and Run(F10)  
   or
-  - Download [PMC.exe](https://github.com/techiesakar/PatientManagementSystem/blob/main/OutPatientManagementSystem.exe)  to run directly 
+  - Download [OutPatientManagementSystem.exe](https://raw.githubusercontent.com/techiesakar/Out-Patient-Management-System/main/OutPatientManagementSystem.exe)  to run directly 
   
