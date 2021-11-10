@@ -1,8 +1,6 @@
 # Out-Patient-Management-System
-Advance Out Patient Management System With Authentication in C
 
-
-This is OutPatient Management System made with complete C language.
+This is OutPatient Management System made with complete in C language.
 
 Features (Admin)
 1. Admin Registration (With Encrypted Password)
