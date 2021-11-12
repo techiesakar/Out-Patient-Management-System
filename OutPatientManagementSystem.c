@@ -25,11 +25,11 @@ void thankyou();
 void fullScreen();
 
 void fullScreen() {
+	// This makes the application open in fullscreen
 	keybd_event(VK_MENU,0x38,0,0);
 	keybd_event(VK_RETURN,0x1c,0,0);
 	keybd_event(VK_RETURN,0x1c,KEYEVENTF_KEYUP,0);
 	keybd_event(VK_MENU,0x38,KEYEVENTF_KEYUP,0);
-	//	return;
 }
 
 // For AdminPanel Function
@@ -44,12 +44,14 @@ void deleteRecord();
 
 
 void gotoxy(short x, short y) {
+	// For placing (x,y) co-ordinate
 	COORD pos = {x,y};
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),pos);
 }
 
 
 struct patient {
+	// defining structure for patient
 	char firstName[20], lastName[20];
 	char add[100],sex[10], problem[20],depart[20], consultant[10], registeredDate[10];
 	int patientno,age;
@@ -74,6 +76,7 @@ int get_size(const char* file_name) {
 	fclose(file);
 	return size;
 }
+
 //Password Encryption
 void encrypt(char password[], int key) {
 	unsigned int i;
@@ -111,7 +114,6 @@ void credit() {
 }
 
 void thankyou() {
-//	welcomeScreen();
 	system("cls");
 	printf("\n\n\n\n\n\n\n\n\n\t\t\t\t\t\t\t...THANK YOU FOR VISITING...");
 	printf("\n\n\t\t\t\t\t\tFor Source Code: Visit github.com/techiesakar");
@@ -121,8 +123,8 @@ void thankyou() {
 	getch();
 }
 
-//Password Encryption Ends
 void adminRegistration() {
+	// If user exist, then login if not then register user
 	char username[20], password[20], petName[20];
 	FILE *pass;
 	if ((pass = fopen("password.txt", "r")) == NULL || get_size("password.txt")==0 ) {
@@ -216,9 +218,10 @@ void adminRegistration() {
 	}
 	fclose(pass);
 
-} //Password Ends
+} // Registration ends
 
 void forgetPassword() {
+	// Ask username and pet's name to rest password
 	int count = 4;
 	do {
 		char username[20], password[20], petName[20], temp_username[20], temp_petName[20];
@@ -253,12 +256,14 @@ void forgetPassword() {
 	} while(count>0);
 }
 void changePassword() {
+	// Erase existing record and register account again
 	FILE *pass;
 	pass=fopen("password.txt","w");
 	fclose(pass);
 	adminRegistration();
 }
 void adminPanel() {
+	// Display all the available options for admin
 	welcomeScreen();
 	int choice;
 	printf("\n\n\n\t\t\t\t1. Add Record");
@@ -301,6 +306,7 @@ void adminPanel() {
 }
 
 void mainMenu() {
+	// This will show before getting logged in
 	welcomeScreen();
 	int choice;
 	printf("\n\n\n\t\t\t\t1. Register/Login");
@@ -338,6 +344,7 @@ void mainMenu() {
 }
 
 void addRecord() {
+	// Add patient - only available for logged in user
 	system("cls");
 	welcomeScreen();
 	char ans;
@@ -348,8 +355,9 @@ void addRecord() {
 		exit(0);
 	}
 
+// Auto assign unique patient ID for new patient
 	int patientID;
-	int count = 0; // Patient's id
+	int count = 0;
 	while(fscanf(fp,"%s%s%s%s%d%d%s%s%s%s%f%f%s",p.firstName, p.lastName,p.add,p.sex,&p.age,&p.patientno,&p.phone,p.problem,p.depart,p.consultant,&p.doc,&p.misc,p.registeredDate)!=EOF) {
 		count++;
 		if (count!=0) {
@@ -361,12 +369,14 @@ void addRecord() {
 	p.patientno = patientID;
 
 
-	//To Register the date
+	// Auto assign date to new user
 	char currentDate[10];
 	time_t t = time(NULL);
 	struct tm tm = *localtime(&t);
 	sprintf(currentDate, "%d-%d-%d", tm.tm_year+1900,tm.tm_mon + 1,tm.tm_mday);
 	strcpy(p.registeredDate, currentDate );
+	// Date Ends
+	
 	addRecordItem(); // Add patient's all data
 	fprintf(fp,"%s\t%s\t%s\t%s\t%d\t%d\t%s\t%s\t%s\t%s\t%f\t%f\t%s\n",p.firstName, p.lastName,p.add, p.sex, p.age, p.patientno, p.phone,p.problem,p.depart,p.consultant, p.doc, p.misc,p.registeredDate);
 	printf("\n\n\t\t\t.....Information Record Successful ...");
@@ -382,12 +392,16 @@ void addRecord() {
 	}
 }
 void addRecordItem(void) {
-	int i, departID; // This is placed inside addRecord() to record patient's available data
+	// Read all details from patient
+	int i, departID; 
+	
 	char doctor[10][10] = {
+		// Readymade doctor
 		"Siddharth","Dipson","Simpal","Madhav","Sima","Sia","Poonam","Anuj","Yadav","Bhuwan"
 	};
 	char department[20][20]= {
-		"Ortho","ENT","Radiology","Dental","Dermatalogy","Physiology","Neurology","Therapy","Urology","Cardiology"
+		// Readymade department
+		"Ortho","ENT","Radiology","Dental","Dermatalogy","Physiology","Neurology","Therapy","Internal-Medicine","Cardiology"
 	};
 	fflush(stdin);
 	gotoxy(85,15);
@@ -420,6 +434,7 @@ void addRecordItem(void) {
 	scanf("%d",&departID);
 
 	for(i=0; i<10; i++) {
+		// Auto assign department and doctor using departID
 		if(departID==i) {
 			strcpy(p.depart, department[i]);
 			strcpy(p.consultant, doctor[i]);
@@ -434,7 +449,7 @@ void addRecordItem(void) {
 	printf("\n\t\t\t\tMiscellaneous Charge:");
 	scanf("%f",&p.misc);
 
-} //
+} // addRecordItem ends
 
 void tableHead() {
 	gotoxy(11,15);
@@ -479,9 +494,9 @@ void tableHead() {
 	printf("|");
 	gotoxy(12,18);
 	printf("___________________________________________________________________________________________________________________________________________________________________________");
-}
+} // Heading of records
 int listLoopRow(int row) {
-	// This function is used inside while loop, to print the user's record in each line
+	// Used inside while loop, to print the user's record in each line
 	gotoxy(15,row);
 	printf("%i", p.patientno);
 	gotoxy(20,row);
@@ -508,7 +523,8 @@ int listLoopRow(int row) {
 	printf("%.2f", p.misc+p.doc);
 	gotoxy(165,row);
 	printf("%s", p.registeredDate);
-}
+} // listLoopRow Ends
+
 void viewRecord() {
 	int totalMember;
 	int row = 20;
@@ -532,7 +548,7 @@ void viewRecord() {
 	getch(); // Hold screen until user press any key
 	welcomeScreen();
 	adminPanel();// Takes back to main screen
-}
+} // ViewRecord Ends
 
 void searchRecord(void) {
 	welcomeScreen();
@@ -549,8 +565,7 @@ void searchRecord(void) {
 	scanf("%i",&searchID); // Takes user ID for search
 	welcomeScreen(); // Once data read, clearing screen again
 	printf("\n\n\n\t\t\t\t\t\t\t\tPatient Searched For : %i", searchID );
-//	printf("\n\t\t\t\t\t Patient Searched for: %i \n", searchID);
-	tableHead(); // Record Heading - Display the heading of table
+	tableHead();
 
 	while(fscanf(fp,"%s%s%s%s%d%d%s%s%s%s%f%f%s",p.firstName, p.lastName,p.add,p.sex,&p.age,&p.patientno,&p.phone,p.problem,p.depart,p.consultant,&p.doc,&p.misc,p.registeredDate)!=EOF) {
 		if(p.patientno == searchID) {
@@ -577,7 +592,7 @@ searchAgain:
 		printf("\n\tInvalid Input. \n");
 		goto searchAgain;
 	}
-}
+} // searchRecord ends
 
 void editRecord() {
 	welcomeScreen();
@@ -628,14 +643,15 @@ void editRecord() {
 	if(!valid) {
 		printf("\n\n\t\t\t\tNo record found");
 	}
-	fclose(fp);
 	fclose(tf);
+	fclose(fp);
 	remove("patient.txt"); // remove existing file
 	rename("temp_patient.txt","patient.txt"); // Renaming temporaty file to original name
 	getch();
 	adminPanel(); // Go back to main memu
 }
-
+ // editRecord Ends
+ 
 void deleteRecord() {
 	welcomeScreen();
 	int searchID;
@@ -701,4 +717,4 @@ void deleteRecord() {
 		welcomeScreen();
 		viewRecord();
 	}
-}
+} // Delete record ends
