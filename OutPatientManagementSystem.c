@@ -238,6 +238,7 @@ void forgetPassword() {
 			pass=fopen("password.txt","w");
 			fclose(pass);
 			adminRegistration();
+			break;
 		} else {
 			printf("\n\n\t\t\t\t\t\t\tSorry !! Detailed not matched");
 			printf("\n\n\t\t\t\t\t\t\t...Enter any key to continue...");
@@ -247,6 +248,7 @@ void forgetPassword() {
 		if(count<=0) {
 			fclose(pass);
 			mainMenu();
+			break;
 		}
 	} while(count>0);
 }
