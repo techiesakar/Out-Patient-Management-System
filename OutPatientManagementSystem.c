@@ -444,7 +444,7 @@ void addRecordItem(void) {
 			strcpy(p.consultant, "Invalid");
 		}
 	}
-	printf("\n\t\t\t\tDoctor's Charge:");
+	printf("\n\t\t\t\tTicket Charge:");
 	scanf("%f",&p.doc);
 	printf("\n\t\t\t\tMiscellaneous Charge:");
 	scanf("%f",&p.misc);
@@ -453,7 +453,7 @@ void addRecordItem(void) {
 
 void tableHead() {
 	gotoxy(11,15);
-	printf(" ___________________________________________________________________________________________________________________________________________________________________________");
+	printf(" _____________________________________________________________________________________________________________________________________________________________________________________");
 	gotoxy(11,16);
 	printf("|");
 	gotoxy(15,17);
@@ -470,30 +470,30 @@ void tableHead() {
 	printf("PHONE NUMBER");
 	gotoxy(85,17);
 	printf("PROBLEM");
-	gotoxy(95,17);
+	gotoxy(100,17);
 	printf("DEPART");
-	gotoxy(110,17);
+	gotoxy(115,17);
 	printf("CONSULTANT");
-	gotoxy(125,17);
-	printf("DOC FEES");
-	gotoxy(135,17);
+	gotoxy(130,17);
+	printf("TICKET FEES");
+	gotoxy(145,17);
 	printf("OTHER FEES");
-	gotoxy(150,17);
+	gotoxy(160,17);
 	printf("TOTAL FEES");
-	gotoxy(165, 17);
+	gotoxy(175, 17);
 	printf("Registered Date");
-	gotoxy(183,16);
+	gotoxy(193,16);
 	printf("|");
-	gotoxy(183,17);
+	gotoxy(193,17);
 	printf("|");
-	gotoxy(183,18);
+	gotoxy(193,18);
 	printf("|");
 	gotoxy(11,17);
 	printf("|");
 	gotoxy(11,18);
 	printf("|");
 	gotoxy(12,18);
-	printf("___________________________________________________________________________________________________________________________________________________________________________");
+	printf("_____________________________________________________________________________________________________________________________________________________________________________________");
 } // Heading of records
 int listLoopRow(int row) {
 	// Used inside while loop, to print the user's record in each line
@@ -511,17 +511,17 @@ int listLoopRow(int row) {
 	printf("%s", p.phone);
 	gotoxy(85,row);
 	printf(" %s", p.problem);
-	gotoxy(95,row);
+	gotoxy(100,row);
 	printf("%s", p.depart);
-	gotoxy(110,row);
+	gotoxy(115,row);
 	printf("Dr. %s", p.consultant);
-	gotoxy(125,row);
+	gotoxy(130,row);
 	printf("%.2f", p.doc);
-	gotoxy(135,row);
+	gotoxy(145,row);
 	printf("%.2f", p.misc);
-	gotoxy(150,row);
+	gotoxy(160,row);
 	printf("%.2f", p.misc+p.doc);
-	gotoxy(165,row);
+	gotoxy(175,row);
 	printf("%s", p.registeredDate);
 } // listLoopRow Ends
 
