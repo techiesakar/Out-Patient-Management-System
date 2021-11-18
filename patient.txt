@@ -1,0 +1,4 @@
+Samar	Kharel	Mangalapur	M	22	1	9867700556	Gastric	Medicine	Sangam	100.000000	0.000000	2021-11-17
+Priya	Tamang	Drivertole	F	18	2	9867723100	Hand	Ortho	Siddharth	100.000000	0.000000	2021-11-18
+Suman	Rana	Murgiya	M	26	3	9867703256	Teeth	Dental	Malika	100.000000	0.000000	2021-11-18
+Eelena	Karki	Manigram	F	22	4	9867723875	Skin	Dermatalogy	Nabeen	100.000000	0.000000	2021-11-18

@@ -56,7 +56,7 @@ struct patient {
 	char add[100],sex[10], problem[20],depart[20], consultant[10], registeredDate[10];
 	int patientno,age;
 	char phone[12];
-	float bed,doc,misc;
+	float ticketFees,misc;
 };
 struct patient p;
 
@@ -358,7 +358,7 @@ void addRecord() {
 // Auto assign unique patient ID for new patient
 	int patientID;
 	int count = 0;
-	while(fscanf(fp,"%s%s%s%s%d%d%s%s%s%s%f%f%s",p.firstName, p.lastName,p.add,p.sex,&p.age,&p.patientno,&p.phone,p.problem,p.depart,p.consultant,&p.doc,&p.misc,p.registeredDate)!=EOF) {
+	while(fscanf(fp,"%s%s%s%s%d%d%s%s%s%s%f%f%s",p.firstName, p.lastName,p.add,p.sex,&p.age,&p.patientno,&p.phone,p.problem,p.depart,p.consultant,&p.ticketFees,&p.misc,p.registeredDate)!=EOF) {
 		count++;
 		if (count!=0) {
 			patientID = p.patientno+1;
@@ -376,9 +376,9 @@ void addRecord() {
 	sprintf(currentDate, "%d-%d-%d", tm.tm_year+1900,tm.tm_mon + 1,tm.tm_mday);
 	strcpy(p.registeredDate, currentDate );
 	// Date Ends
-	
+
 	addRecordItem(); // Add patient's all data
-	fprintf(fp,"%s\t%s\t%s\t%s\t%d\t%d\t%s\t%s\t%s\t%s\t%f\t%f\t%s\n",p.firstName, p.lastName,p.add, p.sex, p.age, p.patientno, p.phone,p.problem,p.depart,p.consultant, p.doc, p.misc,p.registeredDate);
+	fprintf(fp,"%s\t%s\t%s\t%s\t%d\t%d\t%s\t%s\t%s\t%s\t%f\t%f\t%s\n",p.firstName, p.lastName,p.add, p.sex, p.age, p.patientno, p.phone,p.problem,p.depart,p.consultant, p.ticketFees, p.misc,p.registeredDate);
 	printf("\n\n\t\t\t.....Information Record Successful ...");
 	fclose(fp); // closing file pointer after successfull record entry
 	getch(); // hold screen
@@ -393,15 +393,15 @@ void addRecord() {
 }
 void addRecordItem(void) {
 	// Read all details from patient
-	int i, departID; 
-	
+	int i, departID;
+
 	char doctor[10][10] = {
 		// Readymade doctor
 		"Siddharth","Dipson","Simpal","Madhav","Sima","Sia","Poonam","Anuj","Yadav","Bhuwan"
 	};
 	char department[20][20]= {
 		// Readymade department
-		"Ortho","ENT","Radiology","Dental","Dermatalogy","Physiology","Neurology","Therapy","Internal-Medicine","Cardiology"
+		"Ortho","ENT","Radiology","Dental","Dermatalogy","Physiology","Neurology","Therapy","Urology","Cardiology"
 	};
 	fflush(stdin);
 	gotoxy(85,15);
@@ -412,24 +412,34 @@ void addRecordItem(void) {
 	}
 	gotoxy(20,15);
 	printf("\t\t\t******** Add Patients Record ********");
+	fflush(stdin);
 	printf("\n\n\t\t\t\tFirst Name: ");
 	scanf("%s",p.firstName);
 	p.firstName[0]=toupper(p.firstName[0]);
+	fflush(stdin);
 	printf("\n\t\t\t\tLast Name: ");
 	scanf("%s",p.lastName);
 	p.lastName[0]=toupper(p.lastName[0]);
+	fflush(stdin);
 	printf("\n\t\t\t\tAddress: ");
 	scanf("%s",p.add);
 	p.add[0]=toupper(p.add[0]);
+	fflush(stdin);
 	printf("\n\t\t\t\tGender[M|F]:");
 	scanf("%s",p.sex);
+	fflush(stdin);
+//	gets(p.sex);
 	p.sex[0]=toupper(p.sex[0]);
+	
 	printf("\n\t\t\t\tAge: ");
 	scanf("%d",&p.age);
 	printf("\n\t\t\t\tPhone Number: ");
 	scanf("%s",p.phone);
+	fflush(stdin);
 	printf("\n\t\t\t\tProblem: ");
 	scanf("%s",p.problem);
+	fflush(stdin);
+	p.problem[0]=toupper(p.problem[0]);
 	printf("\n\t\t\t\tDepart ID: ");
 	scanf("%d",&departID);
 
@@ -445,7 +455,7 @@ void addRecordItem(void) {
 		}
 	}
 	printf("\n\t\t\t\tTicket Charge:");
-	scanf("%f",&p.doc);
+	scanf("%f",&p.ticketFees);
 	printf("\n\t\t\t\tMiscellaneous Charge:");
 	scanf("%f",&p.misc);
 
@@ -516,11 +526,11 @@ int listLoopRow(int row) {
 	gotoxy(115,row);
 	printf("Dr. %s", p.consultant);
 	gotoxy(130,row);
-	printf("%.2f", p.doc);
+	printf("%.2f", p.ticketFees);
 	gotoxy(145,row);
 	printf("%.2f", p.misc);
 	gotoxy(160,row);
-	printf("%.2f", p.misc+p.doc);
+	printf("%.2f", p.misc+p.ticketFees);
 	gotoxy(175,row);
 	printf("%s", p.registeredDate);
 } // listLoopRow Ends
@@ -538,7 +548,7 @@ void viewRecord() {
 	}
 	welcomeScreen();
 	tableHead();
-	while(fscanf(fp,"%s%s%s%s%d%d%s%s%s%s%f%f%s",p.firstName, p.lastName,p.add,p.sex,&p.age,&p.patientno,&p.phone,p.problem,p.depart,p.consultant,&p.doc,&p.misc,p.registeredDate)!=EOF) {
+	while(fscanf(fp,"%s%s%s%s%d%d%s%s%s%s%f%f%s",p.firstName, p.lastName,p.add,p.sex,&p.age,&p.patientno,&p.phone,p.problem,p.depart,p.consultant,&p.ticketFees,&p.misc,p.registeredDate)!=EOF) {
 		listLoopRow(row);
 		row++;
 	}
@@ -567,7 +577,7 @@ void searchRecord(void) {
 	printf("\n\n\n\t\t\t\t\t\t\t\tPatient Searched For : %i", searchID );
 	tableHead();
 
-	while(fscanf(fp,"%s%s%s%s%d%d%s%s%s%s%f%f%s",p.firstName, p.lastName,p.add,p.sex,&p.age,&p.patientno,&p.phone,p.problem,p.depart,p.consultant,&p.doc,&p.misc,p.registeredDate)!=EOF) {
+	while(fscanf(fp,"%s%s%s%s%d%d%s%s%s%s%f%f%s",p.firstName, p.lastName,p.add,p.sex,&p.age,&p.patientno,&p.phone,p.problem,p.depart,p.consultant,&p.ticketFees,&p.misc,p.registeredDate)!=EOF) {
 		if(p.patientno == searchID) {
 			listLoopRow(row); // It takes row = 12 at first and row++ later
 			row++; // Display the available results in row of each patient
@@ -622,7 +632,7 @@ void editRecord() {
 		adminPanel();
 	}
 
-	while(fscanf(fp,"%s%s%s%s%d%d%s%s%s%s%f%f%s",p.firstName, p.lastName,p.add,p.sex,&p.age,&p.patientno,&p.phone,p.problem,p.depart,p.consultant,&p.doc,&p.misc,p.registeredDate)!=EOF) {
+	while(fscanf(fp,"%s%s%s%s%d%d%s%s%s%s%f%f%s",p.firstName, p.lastName,p.add,p.sex,&p.age,&p.patientno,&p.phone,p.problem,p.depart,p.consultant,&p.ticketFees,&p.misc,p.registeredDate)!=EOF) {
 		if(p.patientno == searchID) {
 			valid = 1;
 			welcomeScreen();
@@ -634,10 +644,10 @@ void editRecord() {
 			getch();
 			welcomeScreen();
 			addRecordItem();
-			fprintf(tf,"%s\t%s\t%s\t%s\t%d\t%d\t%s\t%s\t%s\t%s\t%f\t%f\t%s\n",p.firstName, p.lastName,p.add, p.sex, p.age, p.patientno, p.phone,p.problem,p.depart,p.consultant, p.doc, p.misc,p.registeredDate);
+			fprintf(tf,"%s\t%s\t%s\t%s\t%d\t%d\t%s\t%s\t%s\t%s\t%f\t%f\t%s\n",p.firstName, p.lastName,p.add, p.sex, p.age, p.patientno, p.phone,p.problem,p.depart,p.consultant, p.ticketFees, p.misc,p.registeredDate);
 			printf("\n\n\t\t\t\tUpdated Successfully");
 		} else {
-			fprintf(tf,"%s\t%s\t%s\t%s\t%d\t%d\t%s\t%s\t%s\t%s\t%f\t%f\t%s\n",p.firstName, p.lastName,p.add, p.sex, p.age, p.patientno, p.phone,p.problem,p.depart,p.consultant, p.doc, p.misc,p.registeredDate);
+			fprintf(tf,"%s\t%s\t%s\t%s\t%d\t%d\t%s\t%s\t%s\t%s\t%f\t%f\t%s\n",p.firstName, p.lastName,p.add, p.sex, p.age, p.patientno, p.phone,p.problem,p.depart,p.consultant, p.ticketFees, p.misc,p.registeredDate);
 		}
 	}
 	if(!valid) {
@@ -650,8 +660,8 @@ void editRecord() {
 	getch();
 	adminPanel(); // Go back to main memu
 }
- // editRecord Ends
- 
+// editRecord Ends
+
 void deleteRecord() {
 	welcomeScreen();
 	int searchID;
@@ -679,9 +689,9 @@ void deleteRecord() {
 	scanf("%i", &confirmID); // To confirm with search ID entered before
 	if(searchID==confirmID) {
 		confirm = true;
-		while(fscanf(fp,"%s%s%s%s%d%d%s%s%s%s%f%f%s",p.firstName, p.lastName,p.add,p.sex,&p.age,&p.patientno,&p.phone,p.problem,p.depart,p.consultant,&p.doc,&p.misc,p.registeredDate)!=EOF) {
+		while(fscanf(fp,"%s%s%s%s%d%d%s%s%s%s%f%f%s",p.firstName, p.lastName,p.add,p.sex,&p.age,&p.patientno,&p.phone,p.problem,p.depart,p.consultant,&p.ticketFees,&p.misc,p.registeredDate)!=EOF) {
 			if(confirmID!=p.patientno) {
-				fprintf(tf,"%s\t%s\t%s\t%s\t%d\t%d\t%s\t%s\t%s\t%s\t%f\t%f\t%s\n",p.firstName, p.lastName,p.add, p.sex, p.age, p.patientno, p.phone,p.problem,p.depart,p.consultant, p.doc, p.misc,p.registeredDate);
+				fprintf(tf,"%s\t%s\t%s\t%s\t%d\t%d\t%s\t%s\t%s\t%s\t%f\t%f\t%s\n",p.firstName, p.lastName,p.add, p.sex, p.age, p.patientno, p.phone,p.problem,p.depart,p.consultant, p.ticketFees, p.misc,p.registeredDate);
 			} else {
 				found=true; // record found
 			}
