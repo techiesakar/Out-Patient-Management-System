@@ -87,11 +87,11 @@ void encrypt(char password[], int key) {
 
 void welcomeScreen() {
 	system("cls");
-	printf("\n\n\n\n\n\n\t\t\t\t_____________________________________________________________________________________________");
-	printf("\n\n\t\t\t\t\t\t\t\t        WELCOME TO       \t");
-	printf("\n\t\t\t\t\t\t\t\tPATIENT MANAGEMENT SYSTEM\t");
-	printf("\n\t\t\t\t\t\t\t\t       ABC HOSPITAL    \t\t");
-	printf("\n\t\t\t\t_____________________________________________________________________________________________");
+	printf("\n\n\n\n\n\n\t\t___________________________________________________________________________________________________________________________________________________________________________________");
+	printf("\n\n\t\t\t\t\t\t\t\t\t\t\t       Welcome To       \t");
+	printf("\n\t\t\t\t\t\t\t\t\t\t\tOutPatient Management System\t");
+	printf("\n\t\t\t\t\t\t\t\t\t\t\t       ABC Hospital    \t\t");
+	printf("\n\t\t___________________________________________________________________________________________________________________________________________________________________________________");
 }
 
 void credit() {
@@ -178,6 +178,7 @@ void adminRegistration() {
 			if(count<4) {
 				printf("\n\n\t\t\t\t\t\t\tYou've %d more attempts left : ", count);
 			}
+			printf("\n\n\t\t\t\t\t\t\tLogin To Your Account");
 			printf("\n\n\t\t\t\t\t\t\tEnter Username : ");
 			scanf("%s", temp_username);
 			printf("\n\t\t\t\t\t\t\tEnter Password: ");
@@ -232,6 +233,7 @@ void forgetPassword() {
 		if(count<4) {
 			printf("\n\n\t\t\t\t\t\t\tYou've %d more attempt left", count);
 		}
+		printf("\n\n\t\t\t\t\t\t\tForget Password");
 		printf("\n\n\t\t\t\t\t\t\tConfirm Username : ");
 		scanf("%s", temp_username);
 		printf("\n\t\t\t\t\t\t\tConfirm your pet's name : ");
@@ -430,7 +432,7 @@ void addRecordItem(void) {
 	fflush(stdin);
 //	gets(p.sex);
 	p.sex[0]=toupper(p.sex[0]);
-	
+
 	printf("\n\t\t\t\tAge: ");
 	scanf("%d",&p.age);
 	printf("\n\t\t\t\tPhone Number: ");
@@ -552,7 +554,7 @@ void viewRecord() {
 		listLoopRow(row);
 		row++;
 	}
-	printf("\n\n\t    ___________________________________________________________________________________________________________________________________________________________________________");
+	printf("\n\n\t    ______________________________________________________________________________________________________________________________________________________________________________________");
 	fclose(fp); // Closing file ponter after displaying record
 	printf("\n\n\t\t\t\t    Enter any key to continue..."); // Asking user to press any key
 	getch(); // Hold screen until user press any key
@@ -584,7 +586,7 @@ void searchRecord(void) {
 			count++; // increasing count value after each successfull finding of ID
 		}
 	}
-	printf("\n\n\t    ____________________________________________________________________________________________________________________________________________________________");
+	printf("\n\n\t    ______________________________________________________________________________________________________________________________________________________________________________________");
 
 	printf("\n\n\t\t\t\t\t\tTotal Patients found : %d", count);
 	fclose(fp); // closing file pointer
@@ -612,56 +614,56 @@ void editRecord() {
 	int row = 20;
 	char ans;
 	printf("\n\n\n\t\t\t\t************************** ABC Hospital - Edit Patient's Record *************************\n");
-	tf=fopen("temp_patient.txt","w+");
+
 	if((fp=fopen("patient.txt","r"))==NULL) {
 		welcomeScreen();
 		printf("\n\n\t\t\t\t File is empty...");
 		printf("\n\n\t\t\t\tEnter any key to continue...");
 		getch();
+		fclose(fp);
 		welcomeScreen();
 		adminPanel();
-	}
-
-	gotoxy(12,16);
-	fflush(stdin);
-	printf("\n\t\t\t\t\t Enter Patient's ID : ");
-	scanf("%i",&searchID);
-	welcomeScreen();
-	if (tf==NULL) {
-		printf("\n\n\t\t\t\t\t Cannot Open File !!");
-		adminPanel();
-	}
-
-	while(fscanf(fp,"%s%s%s%s%d%d%s%s%s%s%f%f%s",p.firstName, p.lastName,p.add,p.sex,&p.age,&p.patientno,&p.phone,p.problem,p.depart,p.consultant,&p.ticketFees,&p.misc,p.registeredDate)!=EOF) {
-		if(p.patientno == searchID) {
-			valid = 1;
-			welcomeScreen();
-			printf("\n\n\n\t\t\t\t\t\t\t\tPatient Searched For : %i", searchID );
-			tableHead();
-			listLoopRow(row);
-			row++;
-			printf("\n\n\t\t\t\tEnter any key to continue...");
-			getch();
-			welcomeScreen();
-			addRecordItem();
-			fprintf(tf,"%s\t%s\t%s\t%s\t%d\t%d\t%s\t%s\t%s\t%s\t%f\t%f\t%s\n",p.firstName, p.lastName,p.add, p.sex, p.age, p.patientno, p.phone,p.problem,p.depart,p.consultant, p.ticketFees, p.misc,p.registeredDate);
-			printf("\n\n\t\t\t\tUpdated Successfully");
-		} else {
-			fprintf(tf,"%s\t%s\t%s\t%s\t%d\t%d\t%s\t%s\t%s\t%s\t%f\t%f\t%s\n",p.firstName, p.lastName,p.add, p.sex, p.age, p.patientno, p.phone,p.problem,p.depart,p.consultant, p.ticketFees, p.misc,p.registeredDate);
+	} else {
+		tf=fopen("temp_patient.txt","w+");
+		gotoxy(12,16);
+		fflush(stdin);
+		printf("\n\t\t\t\t\t Enter Patient's ID : ");
+		scanf("%i",&searchID);
+		welcomeScreen();
+		if (tf==NULL) {
+			printf("\n\n\t\t\t\t\t Cannot Open File !!");
+			adminPanel();
 		}
-	}
-	if(!valid) {
-		printf("\n\n\t\t\t\tNo record found");
-	}
-	fclose(tf);
-	fclose(fp);
-	remove("patient.txt"); // remove existing file
-	rename("temp_patient.txt","patient.txt"); // Renaming temporaty file to original name
-	getch();
-	adminPanel(); // Go back to main memu
-}
-// editRecord Ends
 
+		while(fscanf(fp,"%s%s%s%s%d%d%s%s%s%s%f%f%s",p.firstName, p.lastName,p.add,p.sex,&p.age,&p.patientno,&p.phone,p.problem,p.depart,p.consultant,&p.ticketFees,&p.misc,p.registeredDate)!=EOF) {
+			if(p.patientno == searchID) {
+				valid = 1;
+				welcomeScreen();
+				printf("\n\n\n\t\t\t\t\t\t\t\tPatient Searched For : %i", searchID );
+				tableHead();
+				listLoopRow(row);
+				row++;
+				printf("\n\n\t\t\t\tEnter any key to continue...");
+				getch();
+				welcomeScreen();
+				addRecordItem();
+				fprintf(tf,"%s\t%s\t%s\t%s\t%d\t%d\t%s\t%s\t%s\t%s\t%f\t%f\t%s\n",p.firstName, p.lastName,p.add, p.sex, p.age, p.patientno, p.phone,p.problem,p.depart,p.consultant, p.ticketFees, p.misc,p.registeredDate);
+				printf("\n\n\t\t\t\tUpdated Successfully");
+			} else {
+				fprintf(tf,"%s\t%s\t%s\t%s\t%d\t%d\t%s\t%s\t%s\t%s\t%f\t%f\t%s\n",p.firstName, p.lastName,p.add, p.sex, p.age, p.patientno, p.phone,p.problem,p.depart,p.consultant, p.ticketFees, p.misc,p.registeredDate);
+			}
+		}
+		if(!valid) {
+			printf("\n\n\t\t\t\tNo record found");
+		}
+		fclose(tf);
+		fclose(fp);
+		remove("patient.txt"); // remove existing file
+		rename("temp_patient.txt","patient.txt"); // Renaming temporaty file to original name
+		getch();
+		adminPanel(); // Go back to main memu
+	}
+} // edit record ends
 void deleteRecord() {
 	welcomeScreen();
 	int searchID;
